@@ -11,6 +11,7 @@ export default function Input(props) {
         placeholder={props.placeholder}
         value={props.value}
         onChange={props.onChange}
+        onBlur={props.onBlur}
       />
       {props.error && <Alert variant="danger">{props.error}</Alert>}
     </Form.Group>
