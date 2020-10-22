@@ -10,6 +10,7 @@
 // 10. Hooks
 // 11. Keys
 // 12. proptypes
+// 13. a11y
 
 import React, { useState } from "react";
 import "./App.css";
