@@ -1,9 +1,15 @@
 // 1. TypeScript
-// 2. Extract and centralize API calls
-// 3. Implement login and load user data
-// 4. Implement a 2nd page and allow navigating between the two
-// 5. Display confirmation page with "finished form" (not a pdf)
-// 6. Write automated tests
+// 2. Implement login and load user data
+// 3. Implement a 2nd page and allow navigating between the two
+// 4. Display confirmation page with "finished form" (not a pdf)
+// 5. Write automated tests
+// 6. Validate onBlur/onChange - Can use "discover" pattern for onBlur.
+// 7. async/await
+// 8. Error handling
+// 9. React-query / swr
+// 10. Hooks
+// 11. Keys
+// 12. proptypes
 
 import React, { useState } from "react";
 import "./App.css";
@@ -11,6 +17,7 @@ import Input from "./Input";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import Container from "react-bootstrap/Container";
+import { saveInsured } from "./api/insured";
 
 const emptyInsured = {
   name: "",
@@ -28,11 +35,23 @@ export default function App() {
     });
   }
 
-  function getErrors() {
-    const _errors = {}; // using underscore prefix to avoid naming collision with errors in state.
-    if (!insured.name) _errors.name = "Name is required";
-    if (!insured.dob) _errors.dob = "DOB is required";
+  function getErrors(id) {
+    const _errors = id ? { ...errors } : {}; // using underscore prefix to avoid naming collision with errors in state.
+    if (id) delete _errors[id];
+
+    if ((id === "name" || !id) && !insured.name) {
+      _errors.name = "Name is required";
+    }
+
+    if ((id === "dob" || !id) && !insured.dob) {
+      _errors.dob = "DOB is required";
+    }
+
     return _errors;
+  }
+
+  function validate(event) {
+    setErrors(getErrors(event.target.id));
   }
 
   function onSubmit(event) {
@@ -44,14 +63,7 @@ export default function App() {
 
     if (Object.keys(newErrors).length > 0) return; // Return early if errors exist.
 
-    fetch("http://localhost:3001/insured", {
-      method: "POST",
-      headers: {
-        "Content-type": "application/json",
-      },
-      body: JSON.stringify(insured),
-    }).then((response) => {
-      console.log(response);
+    saveInsured(insured).then((response) => {
       setInsured(emptyInsured); // Empty the form.
       alert("saved");
     });
@@ -66,6 +78,7 @@ export default function App() {
           placeholder="Name"
           value={insured.name}
           onChange={onChange}
+          onBlur={validate}
           error={errors.name}
         />
 
@@ -74,6 +87,7 @@ export default function App() {
           placeholder="Date of Birth"
           value={insured.dob}
           onChange={onChange}
+          onBlur={validate}
           error={errors.dob}
         />
 
