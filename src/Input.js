@@ -1,18 +1,18 @@
 import React from "react";
+import Form from "react-bootstrap/Form";
+import Alert from "react-bootstrap/Alert";
 
 export default function Input(props) {
   return (
-    <div>
-      <input
+    <Form.Group>
+      <Form.Control
         id={props.id}
         type="text"
         placeholder={props.placeholder}
         value={props.value}
         onChange={props.onChange}
       />
-      <p aria-live="assertive" className="error">
-        {props.error}
-      </p>
-    </div>
+      {props.error && <Alert variant="danger">{props.error}</Alert>}
+    </Form.Group>
   );
 }

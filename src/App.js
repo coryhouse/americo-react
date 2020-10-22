@@ -1,6 +1,16 @@
+// 1. TypeScript
+// 2. Extract and centralize API calls
+// 3. Implement login and load user data
+// 4. Implement a 2nd page and allow navigating between the two
+// 5. Display confirmation page with "finished form" (not a pdf)
+// 6. Write automated tests
+
 import React, { useState } from "react";
 import "./App.css";
 import Input from "./Input";
+import Form from "react-bootstrap/Form";
+import Button from "react-bootstrap/Button";
+import Container from "react-bootstrap/Container";
 
 const emptyInsured = {
   name: "",
@@ -48,9 +58,9 @@ export default function App() {
   }
 
   return (
-    <>
+    <Container>
       <h1>App</h1>
-      <form onSubmit={onSubmit}>
+      <Form onSubmit={onSubmit}>
         <Input
           id="name"
           placeholder="Name"
@@ -67,8 +77,10 @@ export default function App() {
           error={errors.dob}
         />
 
-        <input type="submit" value="Submit" />
-      </form>
-    </>
+        <Button type="submit" variant="primary">
+          Submit
+        </Button>
+      </Form>
+    </Container>
   );
 }
