@@ -26,7 +26,7 @@ const emptyInsured = {
 };
 
 export default function App() {
-  const [insured, setInsured] = useState(emptyInsured);
+  const [insured, setInsured] = useState(emptyInsured); // Hey react, when this data changes, redraw the screen for me.
   const [errors, setErrors] = useState({});
 
   function onChange(event) {
