@@ -14,20 +14,24 @@
 
 import React, { useState } from "react";
 import "./App.css";
-import Input from "./Input";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import Container from "react-bootstrap/Container";
+import Page1 from "./Page1";
+import Page2 from "./Page2";
 import { saveInsured } from "./api/insured";
 
 const emptyInsured = {
   name: "",
   dob: "",
+  isSmoker: false,
+  weight: null,
 };
 
 export default function App() {
   const [insured, setInsured] = useState(emptyInsured); // Hey react, when this data changes, redraw the screen for me.
   const [errors, setErrors] = useState({});
+  const [currentPage, setCurrentPage] = useState(1);
 
   function onChange(event) {
     setInsured({
@@ -40,12 +44,20 @@ export default function App() {
     const _errors = id ? { ...errors } : {}; // using underscore prefix to avoid naming collision with errors in state.
     if (id) delete _errors[id];
 
-    if ((id === "name" || !id) && !insured.name) {
-      _errors.name = "Name is required";
+    if (currentPage === 1) {
+      if ((id === "name" || !id) && !insured.name) {
+        _errors.name = "Name is required";
+      }
+
+      if ((id === "dob" || !id) && !insured.dob) {
+        _errors.dob = "DOB is required";
+      }
     }
 
-    if ((id === "dob" || !id) && !insured.dob) {
-      _errors.dob = "DOB is required";
+    if (currentPage === 2) {
+      if ((id === "weight" || !id) && !insured.weight) {
+        _errors.weight = "Weight is required";
+      }
     }
 
     return _errors;
@@ -67,33 +79,29 @@ export default function App() {
     saveInsured(insured).then((response) => {
       setInsured(emptyInsured); // Empty the form.
       alert("saved");
+      setCurrentPage(currentPage + 1);
     });
+  }
+
+  function renderPage() {
+    const props = {
+      insured: insured,
+      onChange: onChange,
+      validate: validate,
+      errors: errors,
+    };
+
+    if (currentPage === 1) return <Page1 {...props} />;
+    if (currentPage === 2) return <Page2 {...props} />;
   }
 
   return (
     <Container>
       <h1>App</h1>
       <Form onSubmit={onSubmit}>
-        <Input
-          id="name"
-          placeholder="Name"
-          value={insured.name}
-          onChange={onChange}
-          onBlur={validate}
-          error={errors.name}
-        />
-
-        <Input
-          id="dob"
-          placeholder="Date of Birth"
-          value={insured.dob}
-          onChange={onChange}
-          onBlur={validate}
-          error={errors.dob}
-        />
-
+        {renderPage()}
         <Button type="submit" variant="primary">
-          Submit
+          Next
         </Button>
       </Form>
     </Container>
