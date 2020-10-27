@@ -29,6 +29,7 @@ export default function Input(props: InputProps) {
       <Form.Control
         id={id}
         type="text"
+        aria-label={placeholder}
         placeholder={placeholder}
         value={value}
         onChange={onChange}
