@@ -6,6 +6,7 @@ export type PageProps = {
 };
 
 export type Insured = {
+  id?: number;
   name: string;
   dob: string;
   isSmoker: boolean;
