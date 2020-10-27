@@ -1,4 +1,3 @@
-// 1. TypeScript
 // 5. Write automated tests
 // 10. Hooks - useEffect
 // 2. Implement login and load user data
@@ -9,7 +8,6 @@
 // 8. Error handling
 // 9. React-query / swr
 // 11. Keys
-// 12. proptypes
 // 13. a11y
 // 14. Follow-up fields / conditional rendering
 
@@ -69,6 +67,10 @@ export default function App() {
     setErrors(getErrors(event.target.id));
   }
 
+  function onPrevious() {
+    setCurrentPage(currentPage - 1);
+  }
+
   function onSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault(); // Tell the browser not to reload.
 
@@ -78,11 +80,12 @@ export default function App() {
 
     if (Object.keys(newErrors).length > 0) return; // Return early if errors exist.
 
-    saveInsured(insured).then((response) => {
-      setInsured(emptyInsured); // Empty the form.
-      alert("saved");
-      setCurrentPage(currentPage + 1);
-    });
+    saveInsured(insured)
+      .then((response) => response.json())
+      .then((savedInsured) => {
+        setInsured(savedInsured);
+        setCurrentPage(currentPage + 1);
+      });
   }
 
   function renderPage() {
@@ -101,8 +104,14 @@ export default function App() {
   return (
     <Container>
       <h1>App</h1>
+      <p>Step {currentPage} of 2</p>
       <Form onSubmit={onSubmit}>
         {renderPage()}
+        {currentPage > 1 && (
+          <Button type="button" variant="primary" onClick={onPrevious}>
+            Previous
+          </Button>
+        )}
         <Button type="submit" variant="primary">
           Next
         </Button>
