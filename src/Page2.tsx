@@ -1,7 +1,8 @@
 import React from "react";
 import Input from "./Input";
+import { PageProps } from "./typings/types";
 
-export default function Page2(props) {
+export default function Page2(props: PageProps) {
   const { insured, onChange, validate, errors } = props;
   return (
     <>
@@ -17,7 +18,7 @@ export default function Page2(props) {
       <Input
         id="weight"
         placeholder="Weight"
-        value={insured.weight ?? ""} // Set this to an empty string if weight is null.
+        value={insured.weight ?? ""} // Set this to an empty string if weight is undefined.
         onChange={onChange}
         onBlur={validate}
         error={errors.weight}
