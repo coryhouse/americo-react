@@ -12,3 +12,7 @@ export function saveInsured(insured: Insured) {
     }
   );
 }
+
+export function getInsured(id: number) {
+  return fetch(process.env.REACT_APP_API_BASE_URL + "insured/" + id);
+}
