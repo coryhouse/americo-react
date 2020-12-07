@@ -2,6 +2,7 @@
 // 10. Hooks - useEffect
 // 8. Error handling
 // 15. Loading state
+// 16. Streamline our API call code
 // 2. Implement login and load user data
 // 3. Implement a 2nd page and allow navigating between the two
 // 4. Display confirmation page with "finished form" (not a pdf)
@@ -12,6 +13,7 @@
 // 13. a11y
 // 14. Follow-up fields / conditional rendering
 // 15. Custom hooks
+// 16. Context (global data and functions)
 
 import React, { useState, useEffect } from "react";
 import "./App.css";
